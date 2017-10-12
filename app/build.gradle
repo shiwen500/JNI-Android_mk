@@ -10,6 +10,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // 限定编译出来的abi类型
+        ndk {
+            abiFilters 'x86', 'x86_64'
+        }
     }
     buildTypes {
         release {
@@ -19,9 +24,17 @@ android {
     }
 
     // 指定so文件位置。
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
+//    sourceSets {
+//        main {
+//            jniLibs.srcDirs = ['libs']
+//        }
+//    }
+
+    // 通过下面这个方式可以直接引入源码编译
+    // 宾果Application.mk里面限定的abi将不再起作用，可以在defaultConfig设置限定的abi
+    externalNativeBuild {
+        ndkBuild {
+            path 'JNI/Android.mk'
         }
     }
 }
